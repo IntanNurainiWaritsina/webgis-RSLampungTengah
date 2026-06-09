@@ -1,300 +1,202 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css">
-        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
-        <link rel="stylesheet" href="css/qgis2web.css">
-        <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/MarkerCluster.css">
-        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
-        <style>
-            html, body, #map {
-                width: 100%;
-                height: 100%;
-                padding: 0;
-                margin: 0;
-            }
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web GIS Persebaran Rumah Sakit Lampung Tengah</title>
 
-            /* --- STYLE LAYAR PEMBUKA KREATIF (LANDING PAGE) --- */
-            #welcome-screen {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-                color: white;
-                z-index: 99999; /* Dibuat sangat tinggi agar menutupi peta di awal */
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                text-align: center;
-                transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-                padding: 20px;
-                box-sizing: border-box;
-            }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-            /* Efek meluncur ke atas saat tombol diklik */
-            #welcome-screen.hide {
-                transform: translateY(-100%);
-            }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #003b5c, #0077a3);
+      color: white;
+    }
 
-            .profile-card {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                padding: 30px;
-                border-radius: 20px;
-                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-                max-width: 500px;
-                width: 100%;
-            }
+    .container {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
 
-            .avatar-container {
-                position: relative;
-                width: 130px;
-                height: 130px;
-                margin: 0 auto 20px;
-            }
+    .card {
+      width: 100%;
+      max-width: 780px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 25px;
+      padding: 45px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
 
-            .avatar {
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-                object-fit: cover;
-                border: 4px solid #fff;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            }
+    .logo {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #ffd54f;
+      margin-bottom: 25px;
+      background: white;
+    }
 
-            h1 {
-                font-size: 1.6rem;
-                margin-bottom: 5px;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                font-weight: 700;
-                line-height: 1.2;
-            }
+    h1 {
+      font-size: 34px;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
 
-            h2 {
-                font-size: 1.2rem;
-                color: #f1c40f;
-                margin-top: 5px;
-                margin-bottom: 25px;
-                font-weight: 400;
-            }
+    h2 {
+      font-size: 23px;
+      color: #ffd54f;
+      margin-bottom: 35px;
+    }
 
-            .biodata-table {
-                width: 100%;
-                margin-bottom: 30px;
-                text-align: left;
-                font-size: 0.95rem;
-                border-collapse: collapse;
-            }
+    .info {
+      width: 100%;
+      max-width: 530px;
+      margin: 0 auto 35px auto;
+      text-align: left;
+      font-size: 18px;
+      line-height: 2;
+    }
 
-            .biodata-table td {
-                padding: 8px 5px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
+    .row {
+      display: grid;
+      grid-template-columns: 150px 20px 1fr;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding: 4px 0;
+    }
 
-            .label {
-                font-weight: 600;
-                color: #bdc3c7;
-                width: 30%;
-            }
+    .btn {
+      display: inline-block;
+      padding: 16px 45px;
+      background: #ffd54f;
+      color: #222;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 40px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
 
-            .btn-explore {
-                background: #f1c40f;
-                color: #2c3e50;
-                border: none;
-                padding: 12px 35px;
-                font-size: 1rem;
-                font-weight: bold;
-                border-radius: 30px;
-                cursor: pointer;
-                box-shadow: 0 5px 15px rgba(241, 196, 15, 0.4);
-                transition: all 0.3s ease;
-            }
+    .btn:hover {
+      background: #ffca28;
+      transform: translateY(-3px);
+    }
 
-            .btn-explore:hover {
-                background: #f39c12;
-                transform: translateY(-3px);
-                box-shadow: 0 8px 20px rgba(241, 196, 15, 0.6);
-            }
-        </style>
-        <title>Web GIS Rumah Sakit - Lampung Tengah</title>
-    </head>
-    <body>
-        <div id="welcome-screen">
-            <div class="profile-card">
-                <div class="avatar-container">
-                    <img src="foto-profil.jpg" alt="Foto Intan" class="avatar" id="profile-img">
-                </div>
-                <h1>Web GIS Persebaran Rumah Sakit</h1>
-                <h2>Kabupaten Lampung Tengah</h2>
-                
-                <table class="biodata-table">
-                    <tr>
-                        <td class="label">Nama</td>
-                        <td>: Intan Nuraini Waritsina</td>
-                    </tr>
-                    <tr>
-                        <td class="label">NPM</td>
-                        <td>: 2313034044</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Jurusan</td>
-                        <td>: Pendidikan Geografi</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Kampus</td>
-                        <td>: Universitas Lampung</td>
-                    </tr>
-                </table>
+    .map-preview {
+      margin-top: 45px;
+      width: 100%;
+      height: 450px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,0.4);
+      background: white;
+    }
 
-                <button class="btn-explore" onclick="startMap()">Mulai Jelajahi Peta</button>
-            </div>
+    .map-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #eeeeee;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .info {
+        font-size: 15px;
+      }
+
+      .row {
+        grid-template-columns: 100px 15px 1fr;
+      }
+
+      .map-preview {
+        height: 350px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="card">
+
+      <!-- Kalau belum punya foto/logo, bagian img ini boleh dihapus -->
+      <img src="foto.jpg" alt="Foto Intan" class="logo">
+
+      <h1>Web GIS Persebaran Rumah Sakit</h1>
+      <h2>Kabupaten Lampung Tengah</h2>
+
+      <div class="info">
+        <div class="row">
+          <strong>Nama</strong>
+          <span>:</span>
+          <span>Intan Nuraini Waritsina</span>
         </div>
 
-        <div id="map">
+        <div class="row">
+          <strong>NPM</strong>
+          <span>:</span>
+          <span>2313034044</span>
         </div>
 
-        <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script>
-        <script src="js/L.Control.Layers.Tree.js"></script>
-        <script src="js/autolinker.js"></script>
-        <script src="js/rbush.min.js"></script>
-        <script src="js/labelgun.min.js"></script>
-        <script src="js/labels.js"></script>
-        <script src="js/leaflet.markercluster.js"></script>
-        
-        <script src="data/RSUmumYukumMedicalCentre_1.js"></script>
-        
-        <script>
-        // Fungsi interaksi tombol halaman pembuka
-        function startMap() {
-            document.getElementById('welcome-screen').classList.add('hide');
-        }
+        <div class="row">
+          <strong>Jurusan</strong>
+          <span>:</span>
+          <span>Pendidikan Geografi</span>
+        </div>
 
-        // Trik jika nama file foto profil salah/tidak terbaca, otomatis pakai gambar profil bawaan
-        document.getElementById('profile-img').onerror = function() {
-            this.src = 'https://www.w3schools.com/howto/img_avatar2.png';
-        };
+        <div class="row">
+          <strong>Kampus</strong>
+          <span>:</span>
+          <span>Universitas Lampung</span>
+        </div>
+      </div>
 
-        // KODE UTAMA PETA (MENGAKTIFKAN TAMPILAN MAP KABUPATEN LAMPUNG TENGAH)
-        var map = L.map('map', {
-            zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[-5.474415849852028,104.28313463991264],[-4.22557474936399,106.33129525868846]]);
-        
-        var hash = new L.Hash(map);
-        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
-        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-        
-        function removeEmptyRowsFromPopupContent(content, feature) {
-            var tempDiv = document.createElement('div');
-            tempDiv.innerHTML = content;
-            var rows = tempDiv.querySelectorAll('tr');
-            for (var i = 0; i < rows.length; i++) {
-                var td = rows[i].querySelector('td:last-child');
-                if (td && td.innerHTML.trim() === '') {
-                    rows[i].remove();
-                }
-            }
-            return tempDiv.innerHTML;
-        }
-        
-        function addClassToPopupIfHasMedia(content, popup) {
-            var tempDiv = document.createElement('div');
-            tempDiv.innerHTML = content;
-            var images = tempDiv.querySelectorAll('img');
-            var iframes = tempDiv.querySelectorAll('iframe');
-            if (images.length > 0 || iframes.length > 0) {
-                popup._contentNode.classList.add('leaflet-popup-content-media');
-                setTimeout(function() {
-                    popup.update();
-                }, 100);
-            }
-        }
-        
-        var bounds_group = new L.featureGroup([]);
-        function setBounds() {}
+      <!-- Tombol ini menuju halaman peta -->
+      <a href="map/index.html" class="btn">Mulai Jelajahi Peta</a>
 
-        // Mengaktifkan Peta Dasar OpenStreetMap
-        var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            opacity: 1.0,
-            attribution: '',
-            minZoom: 1,
-            maxZoom: 28,
-            minNativeZoom: 0,
-            maxNativeZoom: 19
-        });
-        layer_OpenStreetMap_0;
-        map.addLayer(layer_OpenStreetMap_0);
+      <!-- Ini tampilan peta langsung di halaman depan -->
+      <div class="map-preview">
+        <iframe src="map/index.html"></iframe>
+      </div>
 
-        // Mengatur Kotak Informasi Pop-up saat Titik Rumah Sakit di-klik
-        function pop_RSUmumYukumMedicalCentre_1(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <td colspan="2"><strong>Nama Rumah Sakit:</strong><br>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-            layer.on('click', function(e) {
-                this.closePopup();
-                this.bindPopup(content, { mapMaxHeight: 250 });
-                this.openPopup();
-            });
-        }
+      <p class="note">
+        Jika peta tidak muncul, pastikan folder map berisi file hasil export QGIS secara lengkap.
+      </p>
 
-        // Desain Titik Bundar Peta
-        function style_RSUmumYukumMedicalCentre_1_0() {
-            return {
-                pane: 'pane_RSUmumYukumMedicalCentre_1',
-                radius: 6.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(213,180,60,1.0)',
-                interactive: true,
-            }
-        }
-        
-        map.createPane('pane_RSUmumYukumMedicalCentre_1');
-        map.getPane('pane_RSUmumYukumMedicalCentre_1').style.zIndex = 401;
-        map.getPane('pane_RSUmumYukumMedicalCentre_1').style.pointerEvents = 'none';
-        
-        // Memasukkan data koordinat rumah sakit ke dalam peta Leaflet
-        var layer_RSUmumYukumMedicalCentre_1 = new L.geoJson(json_RSUmumYukumMedicalCentre_1, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_RSUmumYukumMedicalCentre_1',
-            layerName: 'layer_RSUmumYukumMedicalCentre_1',
-            pane: 'pane_RSUmumYukumMedicalCentre_1',
-            onEachFeature: pop_RSUmumYukumMedicalCentre_1,
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, style_RSUmumYukumMedicalCentre_1_0(feature));
-            },
-        });
+    </div>
+  </div>
 
-        // Mengelompokkan titik agar rapi (Cluster)
-        var cluster_RSUmumYukumMedicalCentre_1 = new L.MarkerClusterGroup({showCoverageOnHover: false, spiderfyDistanceMultiplier: 2});
-        cluster_RSUmumYukumMedicalCentre_1.addLayer(layer_RSUmumYukumMedicalCentre_1);
-
-        bounds_group.addLayer(layer_RSUmumYukumMedicalCentre_1);
-        cluster_RSUmumYukumMedicalCentre_1.addTo(map);
-        
-        setBounds();
-        </script>
-    </body>
+</body>
 </html>
