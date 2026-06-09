@@ -3,144 +3,329 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web GIS Persebaran Rumah Sakit Lampung Tengah</title>
+  <title>Web GIS Rumah Sakit Lampung Tengah</title>
 
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #003b5c, #0077a3);
-      color: white;
+      background: #fff0f6;
+      color: #4a1c2f;
     }
 
-    .container {
-      min-height: 100vh;
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 15px rgba(173, 20, 87, 0.15);
+      padding: 15px 8%;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      padding: 30px;
     }
 
-    .card {
+    .brand {
+      font-weight: bold;
+      color: #ad1457;
+      font-size: 20px;
+    }
+
+    .menu a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #880e4f;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .menu a:hover {
+      color: #ec407a;
+    }
+
+    header {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 8%;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 35%),
+        linear-gradient(135deg, #ffd1dc, #f8a5c2, #f06292);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+      max-width: 1150px;
       width: 100%;
-      max-width: 850px;
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 25px;
-      padding: 45px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.2);
     }
 
-    .logo {
-      width: 115px;
-      height: 115px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 4px solid #ffd54f;
-      margin-bottom: 25px;
-      background: white;
-    }
-
-    h1 {
-      font-size: 34px;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
+    .hero-text h1 {
+      font-size: 46px;
+      color: #880e4f;
+      margin-bottom: 15px;
+      line-height: 1.2;
       text-transform: uppercase;
     }
 
-    h2 {
-      font-size: 23px;
-      color: #ffd54f;
-      margin-bottom: 35px;
+    .hero-text h2 {
+      color: #ad1457;
+      font-size: 24px;
+      margin-bottom: 20px;
     }
 
-    .info {
-      width: 100%;
-      max-width: 560px;
-      margin: 0 auto 35px auto;
-      text-align: left;
-      font-size: 18px;
-      line-height: 2;
+    .hero-text p {
+      font-size: 17px;
+      line-height: 1.8;
+      margin-bottom: 30px;
+      max-width: 700px;
     }
 
-    .row {
-      display: grid;
-      grid-template-columns: 150px 20px 1fr;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      padding: 4px 0;
-    }
-
-    .btn {
+    .hero-buttons a {
       display: inline-block;
-      padding: 16px 45px;
-      background: #ffd54f;
-      color: #222;
-      font-size: 18px;
-      font-weight: bold;
+      padding: 15px 28px;
+      border-radius: 35px;
       text-decoration: none;
-      border-radius: 40px;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+      font-weight: bold;
+      margin-right: 12px;
+      margin-bottom: 10px;
       transition: 0.3s;
-      margin-bottom: 35px;
     }
 
-    .btn:hover {
-      background: #ffca28;
-      transform: translateY(-3px);
+    .btn-primary {
+      background: #d81b60;
+      color: white;
+      box-shadow: 0 10px 20px rgba(216, 27, 96, 0.25);
     }
 
-    .map-preview {
-      width: 100%;
-      height: 550px;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 3px solid rgba(255,255,255,0.4);
+    .btn-secondary {
+      background: white;
+      color: #ad1457;
+      border: 2px solid #f48fb1;
+    }
+
+    .hero-buttons a:hover {
+      transform: translateY(-4px);
+    }
+
+    .profile-card {
+      background: rgba(255,255,255,0.68);
+      border-radius: 30px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(173, 20, 87, 0.25);
+      border: 2px solid rgba(255,255,255,0.7);
+    }
+
+    .profile-card img {
+      width: 175px;
+      height: 175px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 6px solid white;
+      box-shadow: 0 8px 25px rgba(173, 20, 87, 0.25);
+      margin-bottom: 20px;
       background: white;
     }
 
-    .map-preview iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+    .profile-card h3 {
+      color: #880e4f;
+      font-size: 22px;
+      margin-bottom: 8px;
     }
 
-    .note {
-      margin-top: 15px;
+    .profile-card p {
+      color: #5d2740;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    section {
+      padding: 75px 8%;
+    }
+
+    .section-title {
+      text-align: center;
+      color: #880e4f;
+      font-size: 34px;
+      margin-bottom: 15px;
+    }
+
+    .section-desc {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 45px auto;
+      font-size: 17px;
+      line-height: 1.8;
+      color: #5d2740;
+    }
+
+    .about {
+      background: white;
+    }
+
+    .about-box {
+      max-width: 1000px;
+      margin: auto;
+      background: #fff0f6;
+      padding: 35px;
+      border-radius: 25px;
+      box-shadow: 0 12px 28px rgba(173, 20, 87, 0.12);
+      line-height: 1.8;
+      font-size: 17px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 0 14px 28px rgba(173, 20, 87, 0.15);
+      transition: 0.3s;
+      border: 1px solid #ffd1dc;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card .number {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: #f06292;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      color: #ad1457;
+      margin-bottom: 12px;
+      font-size: 20px;
+    }
+
+    .card p {
+      line-height: 1.7;
+      color: #5d2740;
+      font-size: 15px;
+    }
+
+    .map-section {
+      background: linear-gradient(135deg, #fff0f6, #ffd1dc);
+    }
+
+    .map-wrapper {
+      max-width: 1150px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 28px;
+      box-shadow: 0 20px 40px rgba(173, 20, 87, 0.22);
+    }
+
+    .map-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .map-header h3 {
+      color: #880e4f;
+      font-size: 23px;
+    }
+
+    .open-map {
+      background: #d81b60;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
       font-size: 14px;
-      color: #eeeeee;
     }
 
-    @media (max-width: 600px) {
-      .card {
-        padding: 30px 20px;
+    iframe {
+      width: 100%;
+      height: 650px;
+      border: none;
+      border-radius: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: #ad1457;
+      color: white;
+      font-size: 14px;
+    }
+
+    @media (max-width: 850px) {
+      nav {
+        flex-direction: column;
+        gap: 10px;
       }
 
-      h1 {
-        font-size: 24px;
+      .menu {
+        text-align: center;
       }
 
-      h2 {
-        font-size: 18px;
+      .menu a {
+        margin: 0 8px;
+        font-size: 14px;
       }
 
-      .info {
-        font-size: 15px;
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
       }
 
-      .row {
-        grid-template-columns: 100px 15px 1fr;
+      .hero-text h1 {
+        font-size: 32px;
       }
 
-      .map-preview {
-        height: 400px;
+      .hero-text h2 {
+        font-size: 20px;
+      }
+
+      .hero-text p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      iframe {
+        height: 500px;
       }
     }
   </style>
@@ -148,52 +333,113 @@
 
 <body>
 
-  <div class="container">
-    <div class="card">
+  <nav>
+    <div class="brand">Web GIS RS Lampung Tengah</div>
+    <div class="menu">
+      <a href="#beranda">Beranda</a>
+      <a href="#deskripsi">Deskripsi</a>
+      <a href="#panduan">Panduan</a>
+      <a href="#peta">Peta</a>
+    </div>
+  </nav>
 
-      <img src="foto-profil.jpg.jpeg" alt="Foto Profil" class="logo">
+  <header id="beranda">
+    <div class="hero">
 
-      <h1>Web GIS Persebaran Rumah Sakit</h1>
-      <h2>Kabupaten Lampung Tengah</h2>
+      <div class="hero-text">
+        <h1>Web GIS Persebaran Rumah Sakit</h1>
+        <h2>Kabupaten Lampung Tengah</h2>
 
-      <div class="info">
-        <div class="row">
-          <strong>Nama</strong>
-          <span>:</span>
-          <span>Intan Nuraini Waritsina</span>
-        </div>
+        <p>
+          Web GIS ini menyajikan informasi persebaran lokasi rumah sakit di Kabupaten Lampung Tengah dalam bentuk peta interaktif. Melalui tampilan ini, pengguna dapat melihat titik lokasi rumah sakit, memahami persebarannya, serta mengeksplorasi peta dengan lebih mudah.
+        </p>
 
-        <div class="row">
-          <strong>NPM</strong>
-          <span>:</span>
-          <span>2313034044</span>
-        </div>
-
-        <div class="row">
-          <strong>Jurusan</strong>
-          <span>:</span>
-          <span>Pendidikan Geografi</span>
-        </div>
-
-        <div class="row">
-          <strong>Kampus</strong>
-          <span>:</span>
-          <span>Universitas Lampung</span>
+        <div class="hero-buttons">
+          <a href="#deskripsi" class="btn-secondary">Lihat Deskripsi</a>
+          <a href="#peta" class="btn-primary">Mulai Jelajahi Peta</a>
         </div>
       </div>
 
-      <a href="peta/index.html" class="btn">Mulai Jelajahi Peta</a>
-
-      <div class="map-preview">
-        <iframe src="peta/index.html"></iframe>
+      <div class="profile-card">
+        <img src="foto-profil.jpg.jpeg" alt="Foto Profil">
+        <h3>Intan Nuraini Waritsina</h3>
+        <p>
+          NPM: 2313034044<br>
+          Pendidikan Geografi<br>
+          Universitas Lampung
+        </p>
       </div>
-
-      <p class="note">
-        Peta persebaran rumah sakit di Kabupaten Lampung Tengah.
-      </p>
 
     </div>
-  </div>
+  </header>
+
+  <section class="about" id="deskripsi">
+    <h2 class="section-title">Deskripsi Web GIS</h2>
+    <p class="section-desc">
+      Bagian ini menjelaskan tujuan pembuatan Web GIS dan informasi yang ditampilkan pada peta.
+    </p>
+
+    <div class="about-box">
+      Web GIS persebaran rumah sakit di Kabupaten Lampung Tengah dibuat untuk membantu pengguna memahami lokasi fasilitas kesehatan secara spasial. Melalui tampilan peta interaktif, informasi rumah sakit tidak hanya ditampilkan dalam bentuk daftar, tetapi juga divisualisasikan berdasarkan posisi geografisnya.
+      <br><br>
+      Peta ini dapat dimanfaatkan sebagai media pembelajaran geografi, khususnya dalam memahami penggunaan Sistem Informasi Geografis untuk memetakan fasilitas umum. Selain itu, tampilan Web GIS juga memudahkan pengguna dalam mengeksplorasi data rumah sakit karena dapat diperbesar, digeser, dan dibuka dalam mode layar penuh.
+    </div>
+  </section>
+
+  <section id="panduan">
+    <h2 class="section-title">Panduan Penggunaan</h2>
+    <p class="section-desc">
+      Ikuti tahapan berikut agar penggunaan peta menjadi lebih mudah dan terarah.
+    </p>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="number">1</div>
+        <h3>Baca Informasi Awal</h3>
+        <p>
+          Pengguna dapat membaca deskripsi singkat untuk memahami tujuan Web GIS dan wilayah kajian yang digunakan, yaitu Kabupaten Lampung Tengah.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="number">2</div>
+        <h3>Klik Menu Peta</h3>
+        <p>
+          Gunakan menu navigasi di bagian atas atau tombol mulai jelajahi peta untuk menuju bagian peta interaktif.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="number">3</div>
+        <h3>Eksplorasi Titik Lokasi</h3>
+        <p>
+          Perbesar, perkecil, geser peta, dan klik titik lokasi untuk melihat informasi rumah sakit secara lebih jelas.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="map-section" id="peta">
+    <h2 class="section-title">Peta Interaktif</h2>
+    <p class="section-desc">
+      Peta berikut menampilkan persebaran rumah sakit di Kabupaten Lampung Tengah. Gunakan fitur zoom dan geser peta untuk melihat lokasi secara lebih detail.
+    </p>
+
+    <div class="map-wrapper">
+      <div class="map-header">
+        <h3>Preview Peta Rumah Sakit</h3>
+        <a href="peta/index.html" target="_blank" class="open-map">Buka Peta Layar Penuh</a>
+      </div>
+
+      <iframe src="peta/index.html"></iframe>
+    </div>
+  </section>
+
+  <footer>
+    Web GIS Persebaran Rumah Sakit Kabupaten Lampung Tengah | Pendidikan Geografi Universitas Lampung
+  </footer>
 
 </body>
 </html>
