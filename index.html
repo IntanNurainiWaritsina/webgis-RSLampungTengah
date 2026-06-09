@@ -29,7 +29,7 @@
 
     .card {
       width: 100%;
-      max-width: 780px;
+      max-width: 850px;
       background: rgba(255, 255, 255, 0.12);
       border-radius: 25px;
       padding: 45px;
@@ -40,8 +40,8 @@
     }
 
     .logo {
-      width: 120px;
-      height: 120px;
+      width: 115px;
+      height: 115px;
       object-fit: cover;
       border-radius: 50%;
       border: 4px solid #ffd54f;
@@ -64,7 +64,7 @@
 
     .info {
       width: 100%;
-      max-width: 530px;
+      max-width: 560px;
       margin: 0 auto 35px auto;
       text-align: left;
       font-size: 18px;
@@ -89,6 +89,7 @@
       border-radius: 40px;
       box-shadow: 0 8px 15px rgba(0,0,0,0.3);
       transition: 0.3s;
+      margin-bottom: 35px;
     }
 
     .btn:hover {
@@ -97,9 +98,8 @@
     }
 
     .map-preview {
-      margin-top: 45px;
       width: 100%;
-      height: 450px;
+      height: 550px;
       border-radius: 20px;
       overflow: hidden;
       border: 3px solid rgba(255,255,255,0.4);
@@ -124,7 +124,7 @@
       }
 
       h1 {
-        font-size: 25px;
+        font-size: 24px;
       }
 
       h2 {
@@ -140,7 +140,7 @@
       }
 
       .map-preview {
-        height: 350px;
+        height: 400px;
       }
     }
   </style>
@@ -151,8 +151,7 @@
   <div class="container">
     <div class="card">
 
-      <!-- Kalau belum punya foto/logo, bagian img ini boleh dihapus -->
-      <img src="foto.jpg" alt="Foto Intan" class="logo">
+      <img src="foto-profil.jpg.jpeg" alt="Foto Profil" class="logo">
 
       <h1>Web GIS Persebaran Rumah Sakit</h1>
       <h2>Kabupaten Lampung Tengah</h2>
@@ -183,16 +182,14 @@
         </div>
       </div>
 
-      <!-- Tombol ini menuju halaman peta -->
-      <a href="map/index.html" class="btn">Mulai Jelajahi Peta</a>
+      <a href="peta/index.html" class="btn">Mulai Jelajahi Peta</a>
 
-      <!-- Ini tampilan peta langsung di halaman depan -->
       <div class="map-preview">
-        <iframe src="map/index.html"></iframe>
+        <iframe src="peta/index.html"></iframe>
       </div>
 
       <p class="note">
-        Jika peta tidak muncul, pastikan folder map berisi file hasil export QGIS secara lengkap.
+        Peta persebaran rumah sakit di Kabupaten Lampung Tengah.
       </p>
 
     </div>
